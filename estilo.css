@@ -115,7 +115,12 @@ form{
     justify-content: center;
     align-items: center;
 }
-
+#listado
+{
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+}
 footer
 {
     height: 100px;

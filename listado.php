@@ -25,18 +25,27 @@
       <h1>Listado</h1>
     </header>
     <main>
-      <section>
-        <?php
-            $sacarListado="SELECT * FROM Niveles;";
-            $sql->consultar($meternivel);
-            if($sql->filasObtenidas>0)
-            {
+      <section >
+        <div id="listado">
+            <?php
+                $sacarListado="SELECT * FROM Niveles;";
+                $sql->consultar($sacarListado);
+                if($sql->filasObtenidas()>0)
+                {
+                    while($fila=$sql->fila_assoc())
+                    {
 
-                $procesos->listado($sql->$resultado);
-            }
+                        $procesos->listado($fila);
+                    }
+                }
+                else
+                {
+                    echo 'no hau niveles';
+                }
+                
             
-          
-        ?>
+            ?>
+        </div >
       </section>
     </main>
   </body>

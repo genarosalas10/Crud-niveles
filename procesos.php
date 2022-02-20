@@ -18,26 +18,15 @@
                     </form>';
         }
 
-        public function listado( $resultado)
+        public function listado( $fila)
         {
-            echo '<table>
-                    <tr>
-                        <th>id</th>
-                        <th>Descripcion</th>
-                        <th>audio</th>
-                    </tr>'
-
-                        while($fila = $resultadoM->fetch_assoc())
-                        {
-                                echo" <tr>
-                                <label>".$fila['nombre']."</label><input type='checkbox' name=mj[] value=".$fila['idMinijuego']."> <br>
-                                    <td>1</td>
-                                    <td>2</td>
-                                    <td>3</td>
-                                </tr>";
-                        {
-                   
-                echo '</table>';
+            echo  "<div>
+                        id: ".$fila['idNivel']
+                        ." descripcion: ".$fila['descripcion']
+                        ." fichero: ".$fila['audio']
+                        ." <a href=borrar.php>borrar</a> 
+                        <a href=modificar.php>modificar</a>                             
+                    </div>";
         }
     }
 ?>
