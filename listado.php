@@ -40,7 +40,7 @@
                 }
                 else
                 {
-                    echo 'no hau niveles';
+                    echo 'no hay niveles';
                 }
                 
             

@@ -17,7 +17,12 @@
 
         public function consultar($consulta)
         {
-            return $this->resultado=$this->conectar->query($consulta);
+             $this->resultado=$this->conectar->query($consulta);
+        }
+
+        public function getResultado()
+        {
+            return $this->resultado;
         }
 
         public function fila_assoc()

@@ -49,7 +49,7 @@
               echo $meternivel;
              
               
-              if( $sql->filasAfectadas()>0)
+              if( $sql->getResultado())
               {
                 echo 'Alta realizada';
               }
