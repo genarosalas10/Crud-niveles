@@ -24,8 +24,8 @@
                         id: ".$fila['idNivel']
                         ." descripcion: ".$fila['descripcion']
                         ." fichero: ".$fila['audio']
-                        ." <a href=borrar.php>borrar</a> 
-                        <a href=modificar.php>modificar</a>                             
+                        ." <a href=borrar.php?".$fila['idNivel'].">borrar</a> 
+                        <a href=modificar.php?".$fila['idNivel'].">modificar</a>                             
                     </div>";
         }
     }
