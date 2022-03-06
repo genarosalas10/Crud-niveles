@@ -39,10 +39,16 @@
           }
           else
           {
-            $borrarNivel="DELETE FROM niveles WHERE idNivel = ".$_POST['id'].";";
-            $sql->consultar($borrarNivel);
-            /* unlink(string $ruta ); */
-            if( $sql->filasAfectadas()>0)
+            $sacarAudio="SELECT audio FROM niveles WHERE idNivel = ".$_POST['id'].";";
+              $sql->consultar($sacarAudio);
+              $fila=$sql->fila_assoc();
+              echo $fila['audio'];
+            if(unlink($fila['audio'] ) )
+            {
+
+              $borrarNivel="DELETE FROM niveles WHERE idNivel = ".$_POST['id'].";";
+              $sql->consultar($borrarNivel);
+              if( $sql->filasAfectadas()>0)
               {
                 echo 'Nivel eliminado ';
               }
@@ -50,13 +56,16 @@
               {
                 $sql->error();
               }
-            
-              echo '<br><a href="listado.php">Volver</a>';
-
-              $sql->cerrar(); 
+           
+            }
+            else
+            {
+              echo 'no se ha podido borrar el archivo';
+            }
+            echo '<br><a href="listado.php">Volver</a>';
           }
             
-         
+          $sql->cerrar(); 
         ?>
       </section>
     </main>

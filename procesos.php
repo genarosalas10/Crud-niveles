@@ -20,17 +20,18 @@
 
         public function listado( $fila)
         {
+            $url = explode("/", $fila['audio']);
             echo  "<div>
                         id: ".$fila['idNivel']
                         ." descripcion: ".$fila['descripcion']
-                        ." fichero: ".$fila['audio']
+                        ." fichero: ".$url[1]
                         ." <a href=borrar.php?id=".$fila['idNivel'].">borrar</a> 
                         <a href=modificar.php?id=".$fila['idNivel'].">modificar</a>                             
                     </div>";
         }
 
         public function modificacion($nivel)
-        {
+        {   $url = explode("/", $nivel['audio']); //Sacar el nombre de la url
              echo '
                     <form action="#" method="POST" enctype="multipart/form-data">
                         <label for="descripcion">Descripcion</label>
@@ -41,7 +42,9 @@
                         <input type="text" name="velocidad" value="'.$nivel['velocidad'].'"/><br />
                         <label for="bolas"> Nº bolas</label>
                         <input type="text" name="bolas" value="'.$nivel['bolas'].'"/><br />
-                        <input type="file" name="audio" value="audio/IDIOMA.PNG"/><br />
+                        <label >archivo </label>
+                        <input type="text" name="audioAntiguo" value="'.$url[1].'" disabled/><br />
+                        <input type="file" name="audioNuevo" value="0" /><br />
                         <input type="submit" name ="enviar" value="Enviar" />
                     </form>';
         }

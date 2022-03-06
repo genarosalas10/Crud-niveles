@@ -3,7 +3,7 @@
     class Procesos_bd 
     {
         private $conectar;
-        public $resultado;
+        private $resultado;
 
         function __construct()
         {
@@ -34,10 +34,10 @@
         {
             //return $this->conectar->errno;
             //return $this->conectar->error;
-            if($this->conexion->errno=='1406')
+            if($this->conectar->errno=='1406')
                 return 'Superados el maximo de caracteres permitidos';
 
-            return $this->conexion->errno.' y '.$this->conectar->error;
+            return $this->conectar->errno.' y '.$this->conectar->error;
         }
 
         public function contarFilas($resultado)
