@@ -1,8 +1,10 @@
 <?php
     require_once("procesos_bd.php");
+    require_once("procesos_vista.php");
     require_once("procesos.php");
 
     $sql=new Procesos_bd();
+    $procesosVista=new Procesos_vista();
     $procesos=new Procesos();
          
 ?>
@@ -39,30 +41,8 @@
           }
           else
           {
-            $sacarAudio="SELECT audio FROM niveles WHERE idNivel = ".$_POST['id'].";";
-              $sql->consultar($sacarAudio);
-              $fila=$sql->fila_assoc();
-              echo $fila['audio'];
-            if(unlink($fila['audio'] ) )
-            {
-
-              $borrarNivel="DELETE FROM niveles WHERE idNivel = ".$_POST['id'].";";
-              $sql->consultar($borrarNivel);
-              if( $sql->filasAfectadas()>0)
-              {
-                echo 'Nivel eliminado ';
-              }
-              else
-              {
-                $sql->error();
-              }
-           
-            }
-            else
-            {
-              echo 'no se ha podido borrar el archivo';
-            }
-            echo '<br><a href="listado.php">Volver</a>';
+            $procesos->listado($_POST['id']);
+            
           }
             
           $sql->cerrar(); 

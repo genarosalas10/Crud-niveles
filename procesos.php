@@ -1,52 +1,89 @@
 <?php
+   require_once("procesos_bd.php");
+   require_once("procesos_vista.php");
     class Procesos
     {
-        public function alta()
+        
+        function __construct()
         {
-             echo '
-                    <form action="#" method="POST" enctype="multipart/form-data">
-                        <label for="descripcion">Descripcion</label>
-                        <input type="text" name="descripcion" required/><br />
-                        <label for="vida"> Nº vida</label>
-                        <input type="text" name="vida" required /><br />
-                        <label for="velocidad"> Velocidad</label>
-                        <input type="text" name="velocidad" required/><br />
-                        <label for="bolas"> Nº bolas</label>
-                        <input type="text" name="bolas" required/><br />
-                        <input type="file" name="audio" required/><br />
-                        <input type="submit" name ="enviar" value="Enviar" />
-                    </form>';
+            
+            $this->sql=new Procesos_bd();
+            $this->procesosVista=new Procesos_vista();
         }
 
-        public function listado( $fila)
+        public function alta($alta,$fichero)
         {
-            $url = explode("/", $fila['audio']);
-            echo  "<div>
-                        id: ".$fila['idNivel']
-                        ." descripcion: ".$fila['descripcion']
-                        ." fichero: ".$url[1]
-                        ." <a href=borrar.php?id=".$fila['idNivel'].">borrar</a> 
-                        <a href=modificar.php?id=".$fila['idNivel'].">modificar</a>                             
-                    </div>";
+        
+            $nombre=$fichero['audio']['name'];
+            $ruta="audios/".$nombre;
+            $tmp_name = $fichero["audio"]["tmp_name"];
+
+            if(move_uploaded_file($tmp_name, $ruta))
+            {
+
+              $meternivel=
+              "INSERT INTO Niveles (descripcion,vida,velocidad,bolas,audio) 
+              VALUES 
+              ('".$alta['descripcion']."','".$alta['vida']."','".$alta['velocidad']."','".$alta['bolas']."','".$ruta."');";
+              $this->sql->consultar($meternivel);
+              echo $meternivel;
+             
+              
+              if( $this->sql->getResultado())
+              {
+                echo 'Alta realizada';
+              }
+              else
+              {
+                $this->sql->error();
+              }
+            }
+            $this->sql->cerrar(); 
         }
 
-        public function modificacion($nivel)
-        {   $url = explode("/", $nivel['audio']); //Sacar el nombre de la url
-             echo '
-                    <form action="#" method="POST" enctype="multipart/form-data">
-                        <label for="descripcion">Descripcion</label>
-                        <input type="text" name="descripcion" value="'.$nivel['descripcion'].'" /><br />
-                        <label for="vida"> Nº vida</label>
-                        <input type="text" name="vida" value="'.$nivel['vida'].'"/><br />
-                        <label for="velocidad"> Velocidad</label>
-                        <input type="text" name="velocidad" value="'.$nivel['velocidad'].'"/><br />
-                        <label for="bolas"> Nº bolas</label>
-                        <input type="text" name="bolas" value="'.$nivel['bolas'].'"/><br />
-                        <label >archivo </label>
-                        <input type="text" name="audioAntiguo" value="'.$url[1].'" disabled/><br />
-                        <input type="file" name="audioNuevo" value="0" /><br />
-                        <input type="submit" name ="enviar" value="Enviar" />
-                    </form>';
+        public function listado()
+        {
+            $sacarListado="SELECT * FROM Niveles;";
+            $this->sql->consultar($sacarListado);
+            if($this->sql->filasObtenidas()>0)
+            {
+                while($fila=$this->sql->fila_assoc())
+                {
+
+                    $this->procesosVista->listado($fila);
+                }
+            }
+            else
+            {
+                echo 'no hay niveles';
+            }
+        }
+        public function borrado($idNivel)
+        {
+            $sacarAudio="SELECT audio FROM niveles WHERE idNivel = ".$_POST['id'].";";
+              $sql->consultar($sacarAudio);
+              $fila=$sql->fila_assoc();
+              echo $fila['audio'];
+            if(unlink($fila['audio'] ) )
+            {
+
+              $borrarNivel="DELETE FROM niveles WHERE idNivel = ".$_POST['id'].";";
+              $sql->consultar($borrarNivel);
+              if( $sql->filasAfectadas()>0)
+              {
+                echo 'Nivel eliminado ';
+              }
+              else
+              {
+                $sql->error();
+              }
+           
+            }
+            else
+            {
+              echo 'no se ha podido borrar el archivo';
+            }
+            echo '<br><a href="listado.php">Volver</a>';
         }
     }
 ?>

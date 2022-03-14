@@ -1,9 +1,11 @@
 <?php
-    require_once("procesos_bd.php");
-    require_once("procesos.php");
-
-    $sql=new Procesos_bd();
-    $procesos=new Procesos();
+     require_once("procesos_bd.php");
+     require_once("procesos_vista.php");
+     require_once("procesos.php");
+ 
+     $sql=new Procesos_bd();
+     $procesosVista=new Procesos_vista();
+     $procesos=new Procesos();
          
 ?>
 <!doctype html>
@@ -28,22 +30,7 @@
       <section >
         <div id="listado">
             <?php
-                $sacarListado="SELECT * FROM Niveles;";
-                $sql->consultar($sacarListado);
-                if($sql->filasObtenidas()>0)
-                {
-                    while($fila=$sql->fila_assoc())
-                    {
-
-                        $procesos->listado($fila);
-                    }
-                }
-                else
-                {
-                    echo 'no hay niveles';
-                }
-                
-            
+                $procesos->listado();
             ?>
         </div >
       </section>

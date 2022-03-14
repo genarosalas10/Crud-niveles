@@ -1,8 +1,10 @@
 <?php
     require_once("procesos_bd.php");
+    require_once("procesos_vista.php");
     require_once("procesos.php");
 
     $sql=new Procesos_bd();
+    $procesosVista=new Procesos_vista();
     $procesos=new Procesos();
          
 ?>
@@ -35,7 +37,7 @@
               if($sql->filasObtenidas()>0)
               { 
                 $fila=$sql->fila_assoc();
-                $procesos->modificacion( $fila);
+                $procesosVista->modificacion( $fila);
                   
               }
               else
@@ -46,7 +48,7 @@
           else
           {
            
-            if(!empty($_FILES["audioNuevo"]))
+            if(empty($_FILES["audioNuevo"]))
             {
               echo 'viejo archivo';
               $meternivel=
@@ -55,7 +57,7 @@
               vida = '".$_POST['vida']."',
               velocidad ='".$_POST['velocidad']."',
               bolas ='".$_POST['bolas']."'
-              where idNivel=".$_GET['id'].";";
+              where idNivel=".$_POST['idNivel'].";";
               $sql->consultar($meternivel);
               if( $sql->getResultado())
               {
@@ -69,14 +71,10 @@
             } 
             else
             {
-
-            echo 'nuevo archivo';
             $nombre=$_FILES['audioNuevo']['name'];
-            $ruta="audios/".$nombre;
             $tmp_name = $_FILES["audioNuevo"]["tmp_name"];
-            echo  $nombre;
-            echo move_uploaded_file($tmp_name, $ruta);
-            if(move_uploaded_file($tmp_name, $ruta) && unlink($fila['audioAntiguo']))
+            $ruta="audios/".$nombre;
+            if(move_uploaded_file($tmp_name, $ruta) && unlink($_POST['audioAntiguo']))
             {
 
               $actualizarNivel=
@@ -86,14 +84,14 @@
               velocidad ='".$_POST['velocidad']."',
               bolas ='".$_POST['bolas']."',
               audio = '".$ruta."'
-              where idNivel='".$_GET['id']."';";
+              where idNivel='".$_POST['idNivel']."';";
               echo $actualizarNivel;
               $sql->consultar($actualizarNivel);
              
               
               if( $sql->getResultado())
               {
-                echo 'Alta realizada';
+                echo 'Modificacion realizada';
               }
               else
               {

@@ -1,9 +1,10 @@
 <?php
-    require_once("procesos_bd.php");
-    require_once("procesos.php");
+    
+     require_once("procesos_vista.php");
+     require_once("procesos.php");
 
-    $sql=new Procesos_bd();
-    $procesos=new Procesos();
+     $procesosVista=new Procesos_vista();
+     $procesos=new Procesos();
          
 ?>
 <!doctype html>
@@ -30,35 +31,12 @@
           
           if(!isset($_POST['enviar']))
           {
-            $procesos->alta();
+            $procesosVista->alta();
           }
           else
           {
-            $nombre=$_FILES['audio']['name'];
-            $ruta="audios/".$nombre;
-            $tmp_name = $_FILES["audio"]["tmp_name"];
-
-            if(move_uploaded_file($tmp_name, $ruta))
-            {
-
-              $meternivel=
-              "INSERT INTO Niveles (descripcion,vida,velocidad,bolas,audio) 
-              VALUES 
-              ('".$_POST['descripcion']."','".$_POST['vida']."','".$_POST['velocidad']."','".$_POST['bolas']."','".$ruta."');";
-              $sql->consultar($meternivel);
-              echo $meternivel;
-             
-              
-              if( $sql->getResultado())
-              {
-                echo 'Alta realizada';
-              }
-              else
-              {
-                $sql->error();
-              }
-            }
-            $sql->cerrar(); 
+            $procesos->alta($_POST, $_FILES);
+            
           }
           
         ?>
