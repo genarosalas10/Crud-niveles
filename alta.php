@@ -38,7 +38,7 @@
             $procesos->alta($_POST, $_FILES);
             
           }
-          
+        
         ?>
       </section>
     </main>

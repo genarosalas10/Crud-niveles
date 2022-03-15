@@ -43,8 +43,8 @@
                         <label for="bolas"> Nº bolas</label>
                         <input type="text" name="bolas" value="'.$nivel['bolas'].'"/><br />
                         <label >archivo </label>
-                        <input type="text" name="audioAntiguo" value="'.$nivel['audio'].'" /><br />
-                        <input type="file" name="audioNuevo" value="" /><br />
+                        <input type="text" name="audioAntiguo" value="'.$nivel['audio'].'" readonly /><br />
+                        <input type="file" name="audio" value="" /><br />
                         <input id="prodId" name="idNivel" type="hidden" value="'.$nivel['idNivel'].'">
                         <input type="submit" name ="enviar" value="Enviar" />
                     </form>';

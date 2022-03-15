@@ -11,9 +11,42 @@
             $this->procesosVista=new Procesos_vista();
         }
 
+        public function comprobarFichero($fichero)
+        {
+          echo 'hola';
+          $nombre=$fichero['audio']['name'];
+          $ruta = "audios/" .  $nombre;
+          $sw = 1;
+          $tipoFichero = strtolower(pathinfo($nombre,PATHINFO_EXTENSION));
+
+      
+          
+          if($tipoFichero != "mp3" ) {
+            echo 'Solo  se permiten archivos de audio tipo .MP3.';
+            $sw = 0;
+          }
+          
+          if ($fichero["audio"]["size"] > 5000000) {
+            echo 'El archivo que intentas subir es demasiado grande.';
+            $sw = 0;
+          }
+          
+          if (file_exists($ruta)) {
+            echo 'El archivo ya existe.';
+            $sw = 0;
+          }
+          if($sw==1){
+            return true;
+          }
+          else{
+            return false;
+          }
+        }
         public function alta($alta,$fichero)
         {
-        
+
+          if($this->comprobarFichero($fichero))
+          {
             $nombre=$fichero['audio']['name'];
             $ruta="audios/".$nombre;
             $tmp_name = $fichero["audio"]["tmp_name"];
@@ -38,7 +71,9 @@
                 $this->sql->error();
               }
             }
-            $this->sql->cerrar(); 
+          }
+           
+             
         }
 
         public function listado()
@@ -124,37 +159,40 @@
 
         public function modificarArchivo($modificar,$fichero)
         {
-          $nombre=$fichero['audioNuevo']['name'];
-          $tmp_name =$fichero["audioNuevo"]["tmp_name"];
-          $ruta="audios/".$nombre;
-          if(move_uploaded_file($tmp_name, $ruta) && unlink($modificar['audioAntiguo']))
+          if($this->comprobarFichero($fichero))
           {
-
-            $actualizarNivel=
-            "UPDATE Niveles 
-            SET descripcion = '".$modificar['descripcion']."',
-            vida = '".$modificar['vida']."',
-            velocidad ='".$modificar['velocidad']."',
-            bolas ='".$modificar['bolas']."',
-            audio = '".$ruta."'
-            where idNivel='".$modificar['idNivel']."';";
-            echo $actualizarNivel;
-            $sql->consultar($actualizarNivel);
-           
-            
-            if( $sql->getResultado())
+            $nombre=$fichero['audio']['name'];
+            $tmp_name =$fichero["audio"]["tmp_name"];
+            $ruta="audios/".$nombre;
+            if(move_uploaded_file($tmp_name, $ruta) && unlink($modificar['audioAntiguo']))
             {
-              echo 'Modificacion realizada';
+
+              $actualizarNivel=
+              "UPDATE Niveles 
+              SET descripcion = '".$modificar['descripcion']."',
+              vida = '".$modificar['vida']."',
+              velocidad ='".$modificar['velocidad']."',
+              bolas ='".$modificar['bolas']."',
+              audio = '".$ruta."'
+              where idNivel='".$modificar['idNivel']."';";
+              echo $actualizarNivel;
+              $sql->consultar($actualizarNivel);
+            
+              
+              if( $sql->getResultado())
+              {
+                echo 'Modificacion realizada';
+              }
+              else
+              {
+                $sql->error();
+              }
+              
             }
             else
             {
-              $sql->error();
+              echo 'no se ha podido actualizar el archivo';
             }
-            
-          }
-          else
-          {
-            echo 'no se ha podido actualizar el archivo';
           }
         }
     }

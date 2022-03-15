@@ -36,12 +36,12 @@
                 Quieres eliminar el nivel con id '.$_GET['id'].'?
                 <input type="submit" name ="si" value="Si" />
                 <input  name="id" type="hidden" value="'.$_GET['id'].'">
-                <a href="listado.php">Volver</a>
-                </form>';     
+                </form>   
+                <a href="listado.php">Volver</a>';
           }
           else
           {
-            $procesos->listado($_POST['id']);
+            $procesos->borrado($_POST['id']);
             
           }
             
