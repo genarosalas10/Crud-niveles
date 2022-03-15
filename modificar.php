@@ -37,15 +37,16 @@
           else
           {
            
-            if(empty($_FILES["audioNuevo"]))
+            if(empty($_FILES["audioNuevo"]['name']))
             {
+              echo 'Actualizacion sin archivo';
               $procesos->modificar($_POST);
-              echo 'viejo archivo';
               
 
             } 
             else
             {
+              echo 'Actualizacion con archivo';
               $procesos->modificar($_POST, $_FILES);
               
            
