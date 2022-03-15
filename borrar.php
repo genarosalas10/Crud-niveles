@@ -24,7 +24,7 @@
 		</ul>
     </nav>
     <header>
-      <h1>Alta </h1>
+      <h1>borrado </h1>
     </header>
     <main>
       <section>
